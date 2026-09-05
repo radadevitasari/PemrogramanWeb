@@ -1,4 +1,7 @@
-/* ===== Reset & Base ===== */
+/* ==========================================
+   1. BASE STYLES (Default untuk Mobile/HP)
+   ========================================== */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,258 +9,128 @@
 }
 
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: #2b2b2b;
-    background-color: #f5f6f8;
-    line-height: 1.5;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
 }
 
-a {
-    color: #1d6b4a;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* ===== Header & Navbar (Flexbox) ===== */
+/* Header & Navigasi Layar Kecil */
 header {
-    background-color: #1d6b4a;
+    background-color: #1b5e20;
     color: #fff;
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    padding: 1rem;
+    position: relative;
 }
 
 header h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
 }
 
-header nav ul {
-    list-style: none;
-    display: flex;
-    gap: 1.25rem;
-}
-
-header nav a {
-    color: #fff;
-    font-weight: 500;
-}
-
-/* ===== Main Layout ===== */
-main {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-}
-
-/* Monitor lebar */
-@media (min-width: 1400px) {
-    main {
-        max-width: 1300px;
-    }
-}
-
-section {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-section h2 {
-    margin-bottom: 1rem;
-    color: #1d6b4a;
-}
-
-/* ===== Kartu Statistik (CSS Grid) ===== */
-main section:nth-of-type(2) {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-}
-main section:nth-of-type(2) h2 {
-    grid-column: 1 / -1;
-}
-main section:nth-of-type(2) article {
-    background-color: #eef4fa;
-    border-radius: 8px;
-    padding: 1.25rem;
-    text-align: center;
-}
-
-main section:nth-of-type(2) article h3 {
-    font-size: 0.95rem;
-    color: #55677a;
-    margin-bottom: 0.5rem;
-}
-
-main section:nth-of-type(2) article p {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1d6b4a;
-}
-
-/* ===== Tabel ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    text-align: left;
-    padding: 0.65rem 0.75rem;
-    border-bottom: 1px solid #e2e6ea;
-}
-
-thead {
-    background-color: #1d6b4a;
-    color: #fff;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f7f9fb;
-}
-
-tbody tr:hover {
-    background-color: #eef4fa;
-}
-
-td button {
-    padding: 0.35rem 0.7rem;
-    margin-right: 0.35rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-}
-
-td button:first-of-type {
-    background-color: #f0ad4e;
-    color: #fff;
-}
-
-td button:last-of-type {
-    background-color: #d9534f;
-    color: #fff;
-}
-
-td button.btn-detail {
-    background-color: #5bc0de;
-    color: #fff;
-}
-/* ===== Form ===== */
-form p {
-    margin-bottom: 1rem;
-}
-
-form label {
-    display: block;
-    margin-bottom: 0.35rem;
-    font-weight: 600;
-    color: #444;
-}
-
-form input,
-form select {
-    width: 100%;
-    max-width: 400px;
-    padding: 0.55rem 0.7rem;
-    border: 1px solid #cdd4da;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-form button[type="submit"] {
-    background-color: #1d6b4a;
-    color: #fff;
-    border: none;
-    padding: 0.6rem 1.5rem;
-    border-radius: 4px;
-    font-size: 1rem;
+/* Tombol Hamburger */
+.nav-toggle-label {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
-form button[type="submit"]:hover {
-    background-color: #164869;
-}
-
-/* ===== Footer ===== */
-footer {
-    text-align: center;
-    padding: 1.25rem;
-    color: #7a8794;
-    font-size: 0.9rem;
-}
-
-/* ===== Hamburger Menu (checkbox hack) ===== */
 .nav-toggle {
     display: none;
 }
 
-.nav-toggle-label {
+/* Menu Navigasi Sembunyi Secara Default di HP */
+nav {
     display: none;
-    font-size: 1.6rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+nav ul {
+    list-style: none;
+    background-color: #2e7d32;
+}
+
+nav li a {
+    display: block;
     color: #fff;
-    cursor: pointer;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid #388e3c;
 }
 
-
-/* ===== Tabel Responsif ===== */
-.table-responsive {
-    overflow-x: auto;
+/* Checkbox Hack: Tampilkan Nav saat Toggle Dicentang */
+.nav-toggle:checked ~ nav {
+    display: block;
 }
 
-/* ===== Kode Responsif ===== */
+/* Main Content & Section Layout (1 Kolom di HP) */
+main {
+    padding: 1rem;
+}
+
+section {
+    background: #fff;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* Latihan Overflow Code Block */
 .code-responsive {
     overflow-x: auto;
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 4px;
 }
 
-/* ===== Responsive Breakpoints ===== */
-
-/* Tablet ke bawah */
-@media (max-width: 900px) {
-    main section:nth-of-type(2) {
-        grid-template-columns: repeat(2, 1fr);
-    }
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
 }
 
-/* Mobile */
-@media (max-width: 480px) {
-    header {
-        position: relative;
-    }
 
+/* ==========================================
+   2. MEDIA QUERY (Peningkatan untuk Desktop)
+   ========================================== */
+
+@media (min-width: 768px) {
+    /* Sembunyi Tombol Hamburger di Desktop */
     .nav-toggle-label {
-        display: block;
-    }
-
-    header nav {
         display: none;
-        width: 100%;
-        order: 3;
-        margin-top: 1rem;
     }
 
-    .nav-toggle:checked ~ nav {
+    /* Paksa Menu Selalu Tampil & Menyamping di Desktop */
+    nav {
         display: block;
+        width: auto;
+        margin-top: 0;
     }
 
-    header nav ul {
-        flex-direction: column;
-        gap: 0.75rem;
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
+    nav ul {
+        display: flex;
+        background-color: transparent;
+    }
+
+    nav li a {
+        border-bottom: none;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Grid Layout Ringkasan di Desktop */
     main section:nth-of-type(2) {
-        grid-template-columns: 1fr;
-    }
-
-    form input,
-    form select {
-        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
     }
 }
