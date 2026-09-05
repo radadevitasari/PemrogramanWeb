@@ -54,6 +54,13 @@ main {
     padding: 0 1.5rem;
 }
 
+/* Monitor lebar */
+@media (min-width: 1400px) {
+    main {
+        max-width: 1300px;
+    }
+}
+
 section {
     background-color: #fff;
     border-radius: 8px;
