@@ -43,3 +43,10 @@ async function muatDaftarBuku() {
 }
 
 document.addEventListener("DOMContentLoaded", muatDaftarBuku);
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnMuatUlang = document.getElementById("btn-muat-ulang");
+    if (btnMuatUlang) {
+        btnMuatUlang.addEventListener("click", muatDaftarBuku);
+    }
+});
