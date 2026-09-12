@@ -143,7 +143,7 @@ async function muatDataTabel(url, buatBarisHTML) {
     tbody.innerHTML = "";
 
     try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 600));
 
         const res = await fetch(url);
         if (!res.ok) {
