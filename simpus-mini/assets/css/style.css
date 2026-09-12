@@ -42,13 +42,15 @@ header h1 {
 
 /* Menu Navigasi Sembunyi Secara Default di HP */
 nav {
-    display: none;
+    max-height: 0;
+    overflow: hidden;
     width: 100%;
-    margin-top: 1rem;
+    transition: max-height 0.3s ease;
 }
 
 nav.nav-open {
-    display: block;
+    max-height: 300px;
+    margin-top: 1rem;
 }
 
 nav ul {
