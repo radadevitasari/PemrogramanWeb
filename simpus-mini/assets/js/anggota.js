@@ -29,6 +29,10 @@ async function muatDaftarAnggota() {
                 "</td>";
             tbody.appendChild(tr);
         });
+                const counter = document.getElementById("counter-info");
+        if (counter) {
+            counter.textContent = "Menampilkan " + daftarAnggota.length + " dari " + daftarAnggota.length + " data";
+        }
     } catch (err) {
         tbody.innerHTML =
             "<tr><td colspan=\"5\">Gagal memuat data: " + err.message + "</td></tr>";

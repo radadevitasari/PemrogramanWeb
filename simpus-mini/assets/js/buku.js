@@ -30,6 +30,10 @@ async function muatDaftarBuku() {
                 "</td>";
             tbody.appendChild(tr);
         });
+        const counter = document.getElementById("counter-info");
+        if (counter) {
+            counter.textContent = "Menampilkan " + daftarBuku.length + " dari " + daftarBuku.length + " data";
+        }
     } catch (err) {
         tbody.innerHTML =
             "<tr><td colspan=\"5\">Gagal memuat data: " + err.message + "</td></tr>";

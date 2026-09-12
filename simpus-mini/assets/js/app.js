@@ -11,21 +11,22 @@ function initNavToggle() {
 
 // ===== Konfirmasi hapus (front-end only, belum ke server) =====
 function initHapusConfirm() {
-    document.querySelectorAll(".btn-hapus").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-            const row = btn.closest("tr");
-            const nama = row ? row.querySelector("td")?.textContent : "data ini";
-            const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
-            if (yakin && row) {
-                row.remove();
-                const table = document.querySelector(".table-responsive table");
-                const counter = document.getElementById("counter-info");
-                if (table && counter) {
-                    const semuaBaris = table.querySelectorAll("tbody tr");
-                    counter.textContent = "Menampilkan " + semuaBaris.length + " dari " + semuaBaris.length + " data";
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".btn-hapus");
+        if (!btn) return;
+
+        const row = btn.closest("tr");
+        const nama = row ? row.querySelector("td")?.textContent : "data ini";
+        const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
+        if (yakin && row) {
+            row.remove();
+            const table = document.querySelector(".table-responsive table");
+            const counter = document.getElementById("counter-info");
+            if (table && counter) {
+                const semuaBaris = table.querySelectorAll("tbody tr");
+                counter.textContent = "Menampilkan " + semuaBaris.length + " dari " + semuaBaris.length + " data";
             }
-            }
-        });
+        }
     });
 }
 
