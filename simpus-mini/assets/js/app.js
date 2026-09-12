@@ -18,6 +18,12 @@ function initHapusConfirm() {
             const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
             if (yakin && row) {
                 row.remove();
+                const table = document.querySelector(".table-responsive table");
+                const counter = document.getElementById("counter-info");
+                if (table && counter) {
+                    const semuaBaris = table.querySelectorAll("tbody tr");
+                    counter.textContent = "Menampilkan " + semuaBaris.length + " dari " + semuaBaris.length + " data";
+            }
             }
         });
     });
@@ -29,6 +35,14 @@ function initTableFilter() {
     const table = document.querySelector(".table-responsive table");
     if (!input || !table) return;
 
+    function perbaruiCounter() {
+        const counter = document.getElementById("counter-info");
+        if (!counter) return;
+        const semuaBaris = table.querySelectorAll("tbody tr");
+        const barisTampil = table.querySelectorAll("tbody tr:not([style*='display: none'])");
+        counter.textContent = "Menampilkan " + barisTampil.length + " dari " + semuaBaris.length + " data";
+    }
+
     input.addEventListener("keyup", function () {
         const keyword = input.value.toLowerCase();
         const rows = table.querySelectorAll("tbody tr");
@@ -36,7 +50,9 @@ function initTableFilter() {
             const teks = row.querySelector("td")?.textContent.toLowerCase() ?? "";
             row.style.display = teks.includes(keyword) ? "" : "none";
         });
+        perbaruiCounter();
     });
+    perbaruiCounter();
 }
 
 // ===== Validasi form (client-side) =====
