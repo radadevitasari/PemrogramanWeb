@@ -13,6 +13,20 @@ if ($nama === '') {
 if ($noAnggota === '') {
     $errors[] = "No. Anggota wajib diisi.";
 }
+if ($nama !== '' && strlen($nama) < 3) {
+    $errors[] = "Nama minimal 3 karakter.";
+}
+
+if ($noHp !== '' && !preg_match('/^\+?[0-9]{8,15}$/', $noHp)) {
+    $errors[] = "No. HP hanya boleh angka (8-15 digit), boleh diawali +.";
+}
+
+foreach ($_SESSION['anggota'] ?? [] as $a) {
+    if ($a['no_anggota'] === $noAnggota) {
+        $errors[] = "No. Anggota sudah dipakai.";
+        break;
+    }
+}
 
 if (!empty($errors)) {
     $_SESSION['flash'] = ['type' => 'error', 'pesan' => implode(' ', $errors)];
