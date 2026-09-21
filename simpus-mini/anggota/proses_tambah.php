@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . '/../includes/koneksi.php';
 
 $nama = trim($_POST['nama'] ?? '');
 $noAnggota = trim($_POST['no_anggota'] ?? '');
@@ -21,29 +22,29 @@ if ($noHp !== '' && !preg_match('/^\+?[0-9]{8,15}$/', $noHp)) {
     $errors[] = "No. HP hanya boleh angka (8-15 digit), boleh diawali +.";
 }
 
-foreach ($_SESSION['anggota'] ?? [] as $a) {
-    if ($a['no_anggota'] === $noAnggota) {
-        $errors[] = "No. Anggota sudah dipakai.";
-        break;
-    }
-}
-
 if (!empty($errors)) {
     $_SESSION['flash'] = ['type' => 'error', 'pesan' => implode(' ', $errors)];
     header('Location: tambah.php');
     exit;
 }
 
-if (!isset($_SESSION['anggota'])) {
-    $_SESSION['anggota'] = [];
+try {
+    $stmt = $pdo->prepare(
+        "INSERT INTO anggota (nama, no_anggota, alamat, no_hp)
+         VALUES (:nama, :no_anggota, :alamat, :no_hp)
+         RETURNING id"
+    );
+    $stmt->execute([
+        'nama' => $nama,
+        'no_anggota' => $noAnggota,
+        'alamat' => $alamat,
+        'no_hp' => $noHp,
+    ]);
+} catch (PDOException $e) {
+    $_SESSION['flash'] = ['type' => 'error', 'pesan' => 'No. Anggota sudah dipakai, gunakan nomor lain.'];
+    header('Location: tambah.php');
+    exit;
 }
-
-$_SESSION['anggota'][] = [
-    'nama' => $nama,
-    'no_anggota' => $noAnggota,
-    'alamat' => $alamat,
-    'no_hp' => $noHp,
-];
 
 $_SESSION['flash'] = ['type' => 'success', 'pesan' => 'Anggota berhasil ditambahkan.'];
 header('Location: list.php');
