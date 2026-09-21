@@ -3,9 +3,6 @@ $page_title = "Beranda";
 include __DIR__ . '/includes/header.php';
 require __DIR__ . '/includes/koneksi.php';
 
-$flash = $_SESSION['flash'] ?? null;
-unset($_SESSION['flash']);
-
 $totalBuku = $pdo->query("SELECT COUNT(*) FROM buku")->fetchColumn();
 $totalAnggota = $pdo->query("SELECT COUNT(*) FROM anggota")->fetchColumn();
 ?>
@@ -28,13 +25,5 @@ $totalAnggota = $pdo->query("SELECT COUNT(*) FROM anggota")->fetchColumn();
                 <h3>Sedang Dipinjam</h3>
                 <p>0</p>
             </article>
-        </section>
-        <section>
-            <?php if ($flash): ?>
-                <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
-            <?php endif; ?>
-            <a href="reset.php" onclick="return confirm('Yakin reset semua data?');">
-                <button type="button">Reset Data</button>
-            </a>
         </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>
