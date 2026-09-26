@@ -41,14 +41,14 @@ header h1 {
 
 
 /* Menu Navigasi Sembunyi Secara Default di HP */
-nav {
+header nav {
     max-height: 0;
     overflow: hidden;
     width: 100%;
     transition: max-height 0.3s ease;
 }
 
-nav.nav-open {
+header nav.nav-open {
     max-height: 300px;
     margin-top: 1rem;
 }
@@ -200,7 +200,7 @@ footer {
     }
 
     /* Paksa Menu Selalu Tampil & Menyamping di Desktop */
-    nav {
+    header nav {
         display: block;
         width: auto;
         margin-top: 0;
