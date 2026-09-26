@@ -12,11 +12,11 @@ $page = max(1, (int) ($_GET['page'] ?? 1));
 $offset = ($page - 1) * $perPage;
 
 if ($keyword !== '') {
-    $hitung = $pdo->prepare("SELECT COUNT(*) FROM buku WHERE judul ILIKE :keyword");
+    $hitung = $pdo->prepare("SELECT COUNT(*) FROM buku WHERE judul ILIKE :keyword OR pengarang ILIKE :keyword");
     $hitung->execute(['keyword' => '%' . $keyword . '%']);
     $totalRows = $hitung->fetchColumn();
 
-    $stmt = $pdo->prepare("SELECT * FROM buku WHERE judul ILIKE :keyword ORDER BY id DESC LIMIT :limit OFFSET :offset");
+    $stmt = $pdo->prepare("SELECT * FROM buku WHERE judul ILIKE :keyword OR pengarang ILIKE :keyword ORDER BY id DESC LIMIT :limit OFFSET :offset");
     $stmt->bindValue('keyword', '%' . $keyword . '%');
 } else {
     $totalRows = $pdo->query("SELECT COUNT(*) FROM buku")->fetchColumn();
