@@ -5,7 +5,29 @@ require __DIR__ . '/../includes/koneksi.php';
 
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
-$daftarAnggota = $pdo->query("SELECT * FROM anggota ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+$keyword = trim($_GET['q'] ?? '');
+
+$perPage = 5;
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$offset = ($page - 1) * $perPage;
+
+if ($keyword !== '') {
+    $hitung = $pdo->prepare("SELECT COUNT(*) FROM anggota WHERE nama ILIKE :keyword");
+    $hitung->execute(['keyword' => '%' . $keyword . '%']);
+    $totalRows = $hitung->fetchColumn();
+
+    $stmt = $pdo->prepare("SELECT * FROM anggota WHERE nama ILIKE :keyword ORDER BY id DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindValue('keyword', '%' . $keyword . '%');
+} else {
+    $totalRows = $pdo->query("SELECT COUNT(*) FROM anggota")->fetchColumn();
+    $stmt = $pdo->prepare("SELECT * FROM anggota ORDER BY id DESC LIMIT :limit OFFSET :offset");
+}
+$stmt->bindValue('limit', $perPage, PDO::PARAM_INT);
+$stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+
+$daftarAnggota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$totalPages = max(1, (int) ceil($totalRows / $perPage));
 ?>
 
         <section>
@@ -13,10 +35,11 @@ $daftarAnggota = $pdo->query("SELECT * FROM anggota ORDER BY id DESC")->fetchAll
             <?php if ($flash): ?>
                 <p class="flash flash-<?php echo $flash['type']; ?>"><?php echo $flash['pesan']; ?></p>
             <?php endif; ?>
-            <div class="search-box">
+           <form method="get" class="search-box">
             <label for="search-input">Cari Nama Anggota</label>
-            <input type="text" id="search-input" placeholder="Ketik nama anggota...">
-        </div>
+            <input type="text" id="search-input" name="q" placeholder="Ketik nama anggota..." value="<?php echo htmlspecialchars($keyword); ?>">
+            <button type="submit">Cari</button>
+            </form>
             <div class="table-responsive">
             <table>
                 <thead>
@@ -40,9 +63,12 @@ $daftarAnggota = $pdo->query("SELECT * FROM anggota ORDER BY id DESC")->fetchAll
                             <td><?php echo $anggota['nama']; ?></td>
                             <td><?php echo $anggota['alamat']; ?></td>
                             <td><?php echo $anggota['no_hp']; ?></td>
-                            <td>
-                                <button type="button">Edit</button>
-                                <button type="button" class="btn-hapus">Hapus</button>
+                        <td>
+                            <a href="edit.php?id=<?php echo $anggota['id']; ?>" class="btn-edit">Edit</a>
+                            <form class="form-hapus" method="post" action="hapus.php">
+                            <input type="hidden" name="id" value="<?php echo $anggota['id']; ?>">
+                            <button type="submit" class="btn-hapus">Hapus</button>
+                        </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -50,6 +76,12 @@ $daftarAnggota = $pdo->query("SELECT * FROM anggota ORDER BY id DESC")->fetchAll
                 </tbody>
             </table>
             </div>
+            <nav class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <a href="list.php?page=<?php echo $i; ?><?php echo $keyword !== '' ? '&q=' . urlencode($keyword) : ''; ?>"
+            class="<?php echo $i === $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
+            </nav>
         </section>
         <?php include __DIR__ . '/../includes/footer.php'; ?>
   
