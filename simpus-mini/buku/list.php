@@ -7,13 +7,27 @@ $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 $keyword = trim($_GET['q'] ?? '');
 
+$perPage = 5;
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$offset = ($page - 1) * $perPage;
+
 if ($keyword !== '') {
-    $stmt = $pdo->prepare("SELECT * FROM buku WHERE judul ILIKE :keyword ORDER BY id DESC");
-    $stmt->execute(['keyword' => '%' . $keyword . '%']);
-    $daftarBuku = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $hitung = $pdo->prepare("SELECT COUNT(*) FROM buku WHERE judul ILIKE :keyword");
+    $hitung->execute(['keyword' => '%' . $keyword . '%']);
+    $totalRows = $hitung->fetchColumn();
+
+    $stmt = $pdo->prepare("SELECT * FROM buku WHERE judul ILIKE :keyword ORDER BY id DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindValue('keyword', '%' . $keyword . '%');
 } else {
-    $daftarBuku = $pdo->query("SELECT * FROM buku ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    $totalRows = $pdo->query("SELECT COUNT(*) FROM buku")->fetchColumn();
+    $stmt = $pdo->prepare("SELECT * FROM buku ORDER BY id DESC LIMIT :limit OFFSET :offset");
 }
+$stmt->bindValue('limit', $perPage, PDO::PARAM_INT);
+$stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+
+$daftarBuku = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$totalPages = max(1, (int) ceil($totalRows / $perPage));
 ?>
 
         <section>
@@ -51,9 +65,12 @@ if ($keyword !== '') {
                             <td><?php echo $buku['tahun']; ?></td>
                             <td><?php echo $buku['stok']; ?></td>
                             <td><?php echo date('d M Y H:i', strtotime($buku['tanggal_ditambahkan'])); ?></td>
-                            <td>
-                                <button type="button">Edit</button>
-                                <button type="button" class="btn-hapus">Hapus</button>
+                           <td>
+                                <a href="edit.php?id=<?php echo $buku['id']; ?>" class="btn-edit">Edit</a>
+                                <form class="form-hapus" method="post" action="hapus.php">
+                                <input type="hidden" name="id" value="<?php echo $buku['id']; ?>">
+                                <button type="submit" class="btn-hapus">Hapus</button>
+                            </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -61,5 +78,11 @@ if ($keyword !== '') {
                     </tbody>
                 </table>
                 </div>
+                <nav class="pagination">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="list.php?page=<?php echo $i; ?><?php echo $keyword !== '' ? '&q=' . urlencode($keyword) : ''; ?>"
+                    class="<?php echo $i === $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
+                <?php endfor; ?>
+                </nav>
             </section>
 <?php include __DIR__ . '/../includes/footer.php'; ?>
