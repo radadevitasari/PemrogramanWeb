@@ -66,6 +66,19 @@ nav li a {
     border-bottom: 1px solid #388e3c;
 }
 
+/* Status Login (Nama Petugas & Logout/Login) */
+.auth-status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #fff;
+    margin-top: 0.5rem;
+}
+
+.auth-status a {
+    color: #fff;
+    text-decoration: underline;
+}
 
 
 /* Main Content & Section Layout (1 Kolom di HP) */
@@ -220,6 +233,10 @@ footer {
     nav li a {
         border-bottom: none;
         padding: 0.5rem 1rem;
+    }
+
+    .auth-status {
+        margin-top: 0;
     }
 
     /* Grid Layout Ringkasan di Desktop */
