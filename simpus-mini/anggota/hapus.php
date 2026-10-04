@@ -1,6 +1,13 @@
 <?php
 require __DIR__ . '/../includes/auth.php';
-session_start();
+
+// Hanya admin yang boleh menghapus anggota.
+if (($_SESSION['role'] ?? '') !== 'admin') {
+    $_SESSION['flash'] = ['type' => 'error', 'pesan' => 'Anda tidak memiliki izin untuk menghapus anggota.'];
+    header('Location: list.php');
+    exit;
+}
+
 require __DIR__ . '/../includes/koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
