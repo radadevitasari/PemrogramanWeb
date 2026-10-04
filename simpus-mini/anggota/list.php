@@ -68,7 +68,8 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                                 <a href="edit.php?id=<?php echo (int) $anggota['id']; ?>" class="btn-edit">Edit</a>
                                 <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                             <form class="form-hapus" method="post" action="hapus.php">
-                            <input type="hidden" name="id" value="<?php echo $anggota['id']; ?>">
+                            <input type="hidden" name="id" value="<?php echo (int) $anggota['id']; ?>">
+                            <?php echo csrf_field(); ?><?php echo csrf_field(); ?>
                             <button type="submit" class="btn-hapus">Hapus</button>
                         </form>
                          <?php endif; ?>
