@@ -38,7 +38,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
             <?php endif; ?>
            <form method="get" class="search-box">
             <label for="search-input">Cari Nama Anggota</label>
-            <input type="text" id="search-input" name="q" placeholder="Ketik nama anggota..." value="<?php echo htmlspecialchars($keyword); ?>">
+            <input type="text" id="search-input" name="q" placeholder="Ketik nama anggota..." value="<?php echo e($keyword); ?>">
             <button type="submit">Cari</button>
             </form>
             <div class="table-responsive">
@@ -60,13 +60,13 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                     <?php else: ?>
                         <?php foreach ($daftarAnggota as $anggota): ?>
                         <tr>
-                            <td><?php echo $anggota['no_anggota']; ?></td>
-                            <td><?php echo $anggota['nama']; ?></td>
-                            <td><?php echo $anggota['alamat']; ?></td>
-                            <td><?php echo $anggota['no_hp']; ?></td>
-                        <td>
-                            <a href="edit.php?id=<?php echo $anggota['id']; ?>" class="btn-edit">Edit</a>
-                            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                            <td><?php echo e($anggota['no_anggota']); ?></td>
+                            <td><?php echo e($anggota['nama']); ?></td>
+                            <td><?php echo e($anggota['alamat']); ?></td>
+                            <td><?php echo e($anggota['no_hp']); ?></td>
+                            <td>
+                                <a href="edit.php?id=<?php echo (int) $anggota['id']; ?>" class="btn-edit">Edit</a>
+                                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                             <form class="form-hapus" method="post" action="hapus.php">
                             <input type="hidden" name="id" value="<?php echo $anggota['id']; ?>">
                             <button type="submit" class="btn-hapus">Hapus</button>
