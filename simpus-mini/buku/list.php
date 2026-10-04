@@ -37,7 +37,7 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
             <?php endif; ?>
             <form method="get" class="search-box">
             <label for="search-input">Cari Judul Buku</label>
-            <input type="text" id="search-input" name="q" placeholder="Ketik judul buku..." value="<?php echo htmlspecialchars($keyword); ?>">
+            <input type="text" id="search-input" name="q" placeholder="Ketik judul buku..." value="<?php echo e($keyword); ?>">
             <button type="submit">Cari</button>
             </form>
             <div class="table-responsive">
@@ -60,8 +60,8 @@ $totalPages = max(1, (int) ceil($totalRows / $perPage));
                     <?php else: ?>
                         <?php foreach ($daftarBuku as $buku): ?>
                         <tr>
-                            <td><?php echo $buku['judul']; ?></td>
-                            <td><?php echo $buku['pengarang']; ?></td>
+                            <td><?php echo e($buku['judul']); ?></td>
+                            <td><?php echo e($buku['pengarang']); ?></td>
                             <td><?php echo $buku['tahun']; ?></td>
                             <td><?php echo $buku['stok']; ?></td>
                             <td><?php echo date('d M Y H:i', strtotime($buku['tanggal_ditambahkan'])); ?></td>
