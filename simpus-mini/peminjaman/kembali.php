@@ -9,7 +9,7 @@ unset($_SESSION['flash']);
 
 $keyword = trim($_GET['q'] ?? '');
 
-$sqlDasar = "SELECT p.id, b.judul, a.nama, p.tanggal_pinjam
+$sqlDasar = "SELECT p.id, b.judul, a.nama, p.tanggal_pinjam, p.tanggal_jatuh_tempo
              FROM peminjaman p
              JOIN buku b ON b.id = p.buku_id
              JOIN anggota a ON a.id = p.anggota_id
@@ -47,13 +47,14 @@ $daftarAktif = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Anggota</th>
                         <th>Buku</th>
                         <th>Tgl Pinjam</th>
+                        <th>Tgl Jatuh Tempo</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($daftarAktif)): ?>
                     <tr>
-                        <td colspan="4">Tidak ada peminjaman aktif.</td>
+                        <td colspan="5">Tidak ada peminjaman aktif.</td>
                     </tr>
                     <?php else: ?>
                         <?php foreach ($daftarAktif as $trx): ?>
@@ -61,6 +62,12 @@ $daftarAktif = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo e($trx['nama']); ?></td>
                             <td><?php echo e($trx['judul']); ?></td>
                             <td><?php echo $trx['tanggal_pinjam']; ?></td>
+                            <td>
+                                <?php echo $trx['tanggal_jatuh_tempo']; ?>
+                                <?php if ($trx['tanggal_jatuh_tempo'] < date('Y-m-d')): ?>
+                                    <strong style="color:#d9534f">(Terlambat)</strong>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <form method="post" action="proses_kembali.php">
                                     <?php echo csrf_field(); ?>
